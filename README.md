@@ -3,8 +3,6 @@ This project contains the source files to reproduce the results of experiments o
 
 An incremental method for building and evaluating multi-agent models, submitted to JASS, under review, 2014.
 
-Page project website : http://iscpif.github.io/simpoplocal-epb/
-
 Licence
 -------
 
