@@ -23,7 +23,7 @@ To execute a single run:
 
 To build and publish the OpenMoLE plugin:
 
-`sbt osgi-bundle
+`sbt osgi-bundle`
 
 Get the plugin in your target directory, for instance:
 
