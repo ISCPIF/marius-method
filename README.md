@@ -15,9 +15,9 @@ Usage (simulation)
 
 To compile and run this project you need sbt 0.13 (http://www.scala-sbt.org/).
 
-Go to the fitness directory.
+Go to the model directory.
 
-`cd fitness`
+`cd model`
 
 To execute a single run: 
 
