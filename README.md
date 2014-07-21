@@ -3,6 +3,8 @@ This project contains the source files to reproduce the results of experiments o
 
 An incremental method for building and evaluating multi-agent models, submitted to JASS, under review, 2014.
 
+Generate documentation of the model is published [here](http://iscpif.github.io/marius-method/).
+
 Licence
 -------
 
