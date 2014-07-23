@@ -3,7 +3,7 @@ This project contains the source files to reproduce the results of experiments o
 
 An incremental method for building and evaluating multi-agent models, submitted to JASS, under review, 2014.
 
-Page project website : http://iscpif.github.io/simpoplocal-epb/
+Generate documentation of the model is published [here](http://iscpif.github.io/marius-method/).
 
 Licence
 -------
@@ -25,7 +25,7 @@ To execute a single run:
 
 To build and publish the OpenMoLE plugin:
 
-`sbt osgi-bundle
+`sbt osgi-bundle`
 
 Get the plugin in your target directory, for instance:
 
