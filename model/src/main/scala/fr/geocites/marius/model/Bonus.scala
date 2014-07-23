@@ -57,8 +57,8 @@ trait Bonus { marius: Marius =>
       } yield t.transactedFromSum(i)
 
     (importVolumes zip exportVolumes zip diversities) map {
-      case ((is, es), diversity) =>
-        bonusMultiplier * (is + es) * diversity
+      case ((importVolume, exportVolume), diversity) =>
+        bonusMultiplier * (importVolume + exportVolume) * diversity
     }
   }
 
