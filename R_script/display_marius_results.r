@@ -14,14 +14,7 @@ library(ggplot2)
 library(reshape2)
 library(animation)
 
-library(maptools)
 library(RColorBrewer)
-library(classInt)
-library(scales)
-library(rgeos)
-
-library(sp)
-library(rgdal)
 library(gridExtra)
 
 
@@ -36,7 +29,6 @@ path_to_empirical_data <- "tmp/darius.csv"
 
 ##########################################
 #1. Simulations results loading
-#	- assuming the simulation log is in /tmp/
 ##################################### 
 
 #parsing csv file
@@ -86,7 +78,6 @@ create_dataframe_dsim <-function(last_step){
 
 #######################################
 # 2. Empirical Data loading
-#    - replace 
 #########################################
 
 load_data_darius <-function(){
