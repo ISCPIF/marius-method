@@ -344,9 +344,9 @@ geom_line(aes(x= rank(-(X1989)),y=X1989*1000, color=1989)) +
 geom_line(aes_string(x= rg, y= popop ),color="orange" ) +
 scale_x_log10(limits=c(1,20))+
  scale_y_log10(limits=c(1000000,20000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  cale_colour_continuous(guide="none") +
 labs(title=(" rank 1 to 10 distribution")) 
 
 pp2 <- ggplot(dpop,aes()) +
@@ -357,9 +357,9 @@ geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989 )) +
 geom_line(aes_string(x= rg, y= popop ), color="orange") +
 scale_x_log10(limits=c(20,500)) +
  scale_y_log10(limits=c(100000,1000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 20 to 500 distribution")) 
 
 pp3 <- ggplot(dpop,aes()) +
@@ -370,9 +370,9 @@ geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989)) +
 geom_line (aes_string(x= rg, y= popop), color="orange") +
 scale_x_log10(limits=c(100,1145)) +
  scale_y_log10(limits=c(10000,100000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 100 to 1145 distribution")) 
 #scale_colour_hue(guide="none")
 
@@ -386,9 +386,9 @@ geom_line (aes_string(x= rg, y= popop), color="orange") +
 stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 scale_x_log10(limits=c(1,1145)) +
  scale_y_log10(limits=c(10000,20000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none")+
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none")+
 labs(title=("whole range rank-size") )
 
 layout <- matrix(c(1,2,3,4), nrow=2,byrow=TRUE)
@@ -424,8 +424,8 @@ full_range_rank_size <- function(date, dfsimu){
 	stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 	scale_x_log10(limits=c(1,1145)) +
  	scale_y_log10(limits=c(10000,20000000)) +
-	xlab("log(rank)") +
-	ylab("log(size)")+
+	xlab("rank (log scale)") +
+	ylab("size (log scale)")+
 	scale_colour_continuous(guide="none")+
 	labs(title=(paste("Rank-size distribution in", date, sep="") ))
 
