@@ -346,7 +346,7 @@ scale_x_log10(limits=c(1,20))+
  scale_y_log10(limits=c(1000000,20000000)) +
   xlab("rank (log scale)") +
   ylab("size (log scale)")+
-  cale_colour_continuous(guide="none") +
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 1 to 10 distribution")) 
 
 pp2 <- ggplot(dpop,aes()) +
