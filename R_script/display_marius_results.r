@@ -13,7 +13,7 @@ while( length(dev.list())!=0){
 library(ggplot2)
 library(reshape2)
 library(animation)
-
+library(scales)
 library(RColorBrewer)
 library(gridExtra)
 
@@ -343,7 +343,7 @@ geom_line(aes(x= rank(-(X1979)),y=X1979*1000, color=1979)) +
 geom_line(aes(x= rank(-(X1989)),y=X1989*1000, color=1989)) +
 geom_line(aes_string(x= rg, y= popop ),color="orange" ) +
 scale_x_log10(limits=c(1,20))+
- scale_y_log10(limits=c(1000000,20000000)) +
+ scale_y_log10(limits=c(1000000,20000000), labels=comma) +
   xlab("rank (log scale)") +
   ylab("size (log scale)")+
   scale_colour_continuous(guide="none") +
@@ -356,7 +356,7 @@ geom_line(aes(x= rank(-X1979),y=X1979*1000, color=1979 )) +
 geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989 )) +
 geom_line(aes_string(x= rg, y= popop ), color="orange") +
 scale_x_log10(limits=c(20,500)) +
- scale_y_log10(limits=c(100000,1000000)) +
+ scale_y_log10(limits=c(100000,1000000),labels=comma) +
   xlab("rank (log scale)") +
   ylab("size (log scale)")+
   scale_colour_continuous(guide="none") +
@@ -369,7 +369,7 @@ geom_line(aes(x= rank(-X1979),y=X1979*1000, color=1979)) +
 geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989)) +
 geom_line (aes_string(x= rg, y= popop), color="orange") +
 scale_x_log10(limits=c(100,1145)) +
- scale_y_log10(limits=c(10000,100000)) +
+ scale_y_log10(limits=c(10000,100000),labels=comma) +
   xlab("rank (log scale)") +
   ylab("size (log scale)")+
   scale_colour_continuous(guide="none") +
@@ -385,7 +385,7 @@ geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989)) +
 geom_line (aes_string(x= rg, y= popop), color="orange") +
 stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 scale_x_log10(limits=c(1,1145)) +
- scale_y_log10(limits=c(10000,20000000)) +
+ scale_y_log10(limits=c(10000,20000000),labels=comma) +
   xlab("rank (log scale)") +
   ylab("size (log scale)")+
   scale_colour_continuous(guide="none")+
@@ -423,7 +423,7 @@ full_range_rank_size <- function(date, dfsimu){
 	geom_line (aes_string(x= rg, y= popop), color="orange") +
 	stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 	scale_x_log10(limits=c(1,1145)) +
- 	scale_y_log10(limits=c(10000,20000000)) +
+ 	scale_y_log10(limits=c(10000,20000000),labels=comma) +
 	xlab("rank (log scale)") +
 	ylab("size (log scale)")+
 	scale_colour_continuous(guide="none")+
@@ -451,10 +451,10 @@ data_vs_simu_rank_sizes <- function( dfsimu){
 	geom_line (aes(x=rank(-pop1979),y=pop1979*1000), color="indianred3", linetype="dashed") +
 	geom_line (aes(x=rank(-pop1989),y=pop1989*1000), color="indianred1",linetype="dashed") +
 	scale_x_log10(limits=c(1,1145)) +
- 	scale_y_log10(limits=c(10000,20000000)) +
+ 	scale_y_log10(limits=c(10000,20000000), labels=comma) +
 	xlab("rank (log scale)") +
 	ylab("size (log scale)")+
-	scale_colour_manual(values=c("royalblue4","royalblue3","royalblue2","royalblue1","indianred4", "indianred3", "indianred1"),name="year", breaks=(c("1959","1970","1979","1989", "simu 19701", "simu 1979", "simu 1989")))+
+#	scale_colour_manual(values=c("royalblue4","royalblue3","royalblue2","royalblue1","indianred4", "indianred3", "indianred1"),name="year", breaks=(c("1959","1970","1979","1989", "simu 19701", "simu 1979", "simu 1989")))+
 	labs(title=("Data vs. simulation rank-size distributions"))
 
 
