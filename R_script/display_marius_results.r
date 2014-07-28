@@ -24,7 +24,7 @@ library(gridExtra)
 #########################"
 
 path_to_simu_results <- "/tmp/mariusmodel_log.csv"
-path_to_empirical_data <- "tmp/darius.csv"
+path_to_empirical_data <- "/tmp/darius.csv"
 
 
 ##########################################
@@ -437,11 +437,36 @@ full_range_rank_size <- function(date, dfsimu){
 
 
 
+data_vs_simu_rank_sizes <- function( dfsimu){
+
+
+
+
+	pp4 <- ggplot(dfsimu,aes()) +
+	geom_line( aes(x= rank(-X1959), y= X1959*1000, color="royalblue1" ))  +
+ 	geom_line( aes(x= rank(-X1970),y=X1970*1000, color="royalblue2")) +
+	geom_line(aes(x= rank(-X1979),y=X1979*1000, color="royalblue3")) +
+	geom_line(aes(x= rank(-X1989),y=X1989*1000, color="royalblue4")) +
+	geom_line (aes(x=rank(-pop1970),y=pop1970*1000), color="indianred4",linetype="dashed") +
+	geom_line (aes(x=rank(-pop1979),y=pop1979*1000), color="indianred3", linetype="dashed") +
+	geom_line (aes(x=rank(-pop1989),y=pop1989*1000), color="indianred1",linetype="dashed") +
+	scale_x_log10(limits=c(1,1145)) +
+ 	scale_y_log10(limits=c(10000,20000000)) +
+	xlab("rank (log scale)") +
+	ylab("size (log scale)")+
+	scale_colour_manual(values=c("royalblue4","royalblue3","royalblue2","royalblue1","indianred4", "indianred3", "indianred1"),name="year", breaks=(c("1959","1970","1979","1989", "simu 19701", "simu 1979", "simu 1989")))+
+	labs(title=("Data vs. simulation rank-size distributions"))
+
+
+	print(pp4)
+
+
+}
 
 
 
 #################################
-# Tool function for max/pin population/wealth
+# Tool function for max/min population/wealth
 ###########################################
 
 #return the global population over simlulations steps and data
@@ -472,7 +497,15 @@ full_range_rank_size(1970,df)
 dev.new()
 display_total_pop(laststep, df)
 
+#comparison data vs. simu rank size in 	a single graph
+dev.new()
+data_vs_simu_rank_sizes(df)
+
+
+
+
+
 #generate gifs
-four_quadrants_rank_size_zoom(df)
+#four_quadrants_rank_size_zoom(df)
 
 
