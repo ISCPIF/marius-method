@@ -25,14 +25,14 @@ import fr.geocites.marius.model.MariusFile._
 import scalax.io.Resource
 
 object TestModel extends BonusFixedCostModel(
-  bonusMultiplier = 0.0,
+  bonusMultiplier = 59.7633875886,
   fixedCost = 0.0,
-  distanceDecay = 0.1019337437,
-  sizeEffectOnSupply = 1.4551422598,
-  sizeEffectOnDemand = 1.7164889542,
-  economicMultiplier = 0.0079947436,
-  populationToWealthExponent = 1.6805116553,
-  wealthToPopulationExponent = 0.9138508627
+  distanceDecay = 2,
+  sizeEffectOnSupply = 1.8955048387,
+  sizeEffectOnDemand = 1.1685940919,
+  economicMultiplier = 0.0003889895,
+  populationToWealthExponent = 1.0483219038,
+  wealthToPopulationExponent = 0.7855741522
 )
 
 object Run extends App {

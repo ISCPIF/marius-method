@@ -64,14 +64,18 @@ create_dataframe_dsim <-function(last_step){
 	#dividing the whole pop_simu dataframe into chunks by step number
 	for (i in 0:last_step) {
 		temp_step <- subset(pop_simu,step==i)
-		#removing  step number and arokato column from the chunk
+		#removing  step number, demand , suply and arokato column from the chunk
 		temp_step$step <- NULL
 		temp_step$arokato <-NULL
-		#naming columns for wealth and population by year
+		temp_step$supply <-NULL
+		temp_step$demand <-NULL		
+	#naming columns for wealth and population by year
 		names(temp_step)[1] <- paste("pop",1959 +i,sep="" )
 		names(temp_step)[2] <- paste("wealth",1959 +i,sep="" )
-		#adding columns of the current chunk to the list
-		dsim[[i+2]] <-  temp_step
+
+	#adding columns of the current chunk to the list
+		
+	dsim[[i+2]] <-  temp_step
 	}
 	return (dsim)
 }
@@ -306,7 +310,7 @@ display_total_pop <-function(laststep, df){
         dates <- seq(1959,1989,1)
         popsums <- c()
 
-        for( i in 0:laststep+1 ){
+        for( i in 1:laststep+1 ){
                 popsums[i] <- sum(df[2*i ])
         }
 
