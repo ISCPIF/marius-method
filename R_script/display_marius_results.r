@@ -13,15 +13,8 @@ while( length(dev.list())!=0){
 library(ggplot2)
 library(reshape2)
 library(animation)
-
-library(maptools)
-library(RColorBrewer)
-library(classInt)
 library(scales)
-library(rgeos)
-
-library(sp)
-library(rgdal)
+library(RColorBrewer)
 library(gridExtra)
 
 
@@ -31,12 +24,11 @@ library(gridExtra)
 #########################"
 
 path_to_simu_results <- "/tmp/mariusmodel_log.csv"
-path_to_empirical_data <- "tmp/darius.csv"
+path_to_empirical_data <- "/tmp/darius.csv"
 
 
 ##########################################
 #1. Simulations results loading
-#	- assuming the simulation log is in /tmp/
 ##################################### 
 
 #parsing csv file
@@ -72,21 +64,24 @@ create_dataframe_dsim <-function(last_step){
 	#dividing the whole pop_simu dataframe into chunks by step number
 	for (i in 0:last_step) {
 		temp_step <- subset(pop_simu,step==i)
-		#removing  step number and arokato column from the chunk
+		#removing  step number, demand , suply and arokato column from the chunk
 		temp_step$step <- NULL
 		temp_step$arokato <-NULL
-		#naming columns for wealth and population by year
+		temp_step$supply <-NULL
+		temp_step$demand <-NULL		
+	#naming columns for wealth and population by year
 		names(temp_step)[1] <- paste("pop",1959 +i,sep="" )
 		names(temp_step)[2] <- paste("wealth",1959 +i,sep="" )
-		#adding columns of the current chunk to the list
-		dsim[[i+2]] <-  temp_step
+
+	#adding columns of the current chunk to the list
+		
+	dsim[[i+2]] <-  temp_step
 	}
 	return (dsim)
 }
 
 #######################################
 # 2. Empirical Data loading
-#    - replace 
 #########################################
 
 load_data_darius <-function(){
@@ -309,20 +304,78 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
 
 # display the total population evolution over time
-display_total_pop <-function(laststep, dfsimu){
-	# gathering the simulated sums
-	dates <- seq(1959,1989,1)
-	popsums <- c()
-	for( i in 1:laststep + 1){
-		popsums[i] <- sum(dfsimu[2*i])
-	}
+display_total_pop <-function(laststep, df){
 
-	dfsum <- data.frame(dates,popsums)
+ # gathering the simulated sums
+        dates <- seq(1959,1989,1)
+        popsums <- c()
+
+        for( i in 1:laststep+1 ){
+                popsums[i] <- sum(df[2*i ])
+        }
+
+        datadates <- c(1959,1970,1979,1989)
+        datapopsums<- c(sum(df$X1959) , sum(df$X1970), sum(df$X1979), sum(df$X1989))
+        datadfsum <- data.frame(datadates, datapopsums)
+
+        dfsum <- data.frame(dates,popsums)
 
 
-	poptot <- ggplot(dfsum,aes()) +
-	geom_line(aes(x=dates , y= popsums * 1000 ),color="green" )+
-	labs(title="Total population from 1959 to 1989", x="year", y="total population")
+        poptot <- ggplot(dfsum,aes()) +
+        geom_line(aes(x=dates , y= popsums * 1000 ),color="green" )+
+        geom_point(aes(x= datadates, y=datapopsums*1000),data=datadfsum,color="blue")+
+	scale_y_continuous(labels=comma)+
+        labs(title="Total population from 1959 to 1989", x="year", y="total population")
+
+
+        cat("distance to data over time, cities sorted by size\n")
+        logsquare_error1970 <- sum((log10(df[order(df$pop1970,decreasing=FALSE),]$pop1970)-log10(df[order(df$X1970,decreasing=FALSE),]$X1970))^2)
+
+        logsquare_error1979 <- sum((log10(df[order(df$pop1979,decreasing=FALSE),]$pop1979)-log10(df[order(df$X1979,decreasing=FALSE),]$X1979))^2)
+        logsquare_error1989 <- sum((log10(df[order(df$pop1989,decreasing=FALSE),]$pop1989)-log10(df[order(df$X1989,decreasing=FALSE),]$X1989))^2)
+
+
+        size_distribution_error1970 <- sum(abs(df[order(df$pop1970,decreasing=FALSE),]$pop1970*1000-df[order(df$X1970,decreasing=FALSE),]$X1970*1000))
+        size_distribution_error1979 <- sum(abs(df[order(df$pop1979,decreasing=FALSE),]$pop1979*1000-df[order(df$X1979,decreasing=FALSE),]$X1979*1000))
+        size_distribution_error1989 <- sum(abs(df[order(df$pop1989,decreasing=FALSE),]$pop1989*1000-df[order(df$X1989,decreasing=FALSE),]$X1989*1000))
+
+  cat("log square error in 1970:", logsquare_error1970,"\n")
+        cat("log square error in 1979:", logsquare_error1979,"\n")
+        cat("log square error in 1989:", logsquare_error1989,"\n")
+        cat("cumulative log square error over time", logsquare_error1970 + logsquare_error1979 + logsquare_error1989, "\n")
+
+
+        cat("distribution error , cities ordered by size\n")
+
+        cat("distribution absolute error in 1970",size_distribution_error1970,"\n")
+        cat("distribution absolute error in 1979",size_distribution_error1979,"\n")
+        cat("distribution absolute error in 1989",size_distribution_error1989,"\n")
+
+
+
+        error1970 <- abs(sum(df$pop1970*1000-df$X1970*1000))
+        error1979 <- abs(sum(df$pop1979*1000-df$X1979*1000))
+        error1989 <- abs(sum(df$pop1989*1000-df$X1989*1000))
+
+        cat(" absolute error of total population in 1970:", error1970,"\n")
+        cat(" absolute error of total population in 1979:", error1979,"\n")
+        cat(" absolute error of total population in 1989:", error1989,"\n")
+
+        cat("cumulative absolute error over time", error1970 + error1979 + error1989,"\n")
+
+        logsquare_error1970_byID <- sum((log10(df$pop1970)-log10(df$X1970))^2)
+        logsquare_error1979_byID <- sum((log10(df$pop1979)-log10(df$X1979))^2)
+        logsquare_error1989_byID <- sum((log10(df$pop1989)-log10(df$X1989))^2)
+
+        cat("distance to data, cities sorted by ID\n")
+
+        cat(" log square error in 1970, byID",logsquare_error1970_byID,"\n")
+        cat(" log square error in 1979, byID",logsquare_error1979_byID,"\n")
+        cat(" log square error in 1989, byID",logsquare_error1989_byID,"\n")
+
+        cat("cumulative error cities sorted by ID", logsquare_error1970_byID+ logsquare_error1979_byID+ logsquare_error1989_byID,"\n")
+
+
 
 print(poptot)
 
@@ -352,10 +405,10 @@ geom_line(aes(x= rank(-(X1979)),y=X1979*1000, color=1979)) +
 geom_line(aes(x= rank(-(X1989)),y=X1989*1000, color=1989)) +
 geom_line(aes_string(x= rg, y= popop ),color="orange" ) +
 scale_x_log10(limits=c(1,20))+
- scale_y_log10(limits=c(1000000,20000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+ scale_y_log10(limits=c(1000000,20000000), labels=comma) +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 1 to 10 distribution")) 
 
 pp2 <- ggplot(dpop,aes()) +
@@ -365,10 +418,10 @@ geom_line(aes(x= rank(-X1979),y=X1979*1000, color=1979 )) +
 geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989 )) +
 geom_line(aes_string(x= rg, y= popop ), color="orange") +
 scale_x_log10(limits=c(20,500)) +
- scale_y_log10(limits=c(100000,1000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+ scale_y_log10(limits=c(100000,1000000),labels=comma) +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 20 to 500 distribution")) 
 
 pp3 <- ggplot(dpop,aes()) +
@@ -378,10 +431,10 @@ geom_line(aes(x= rank(-X1979),y=X1979*1000, color=1979)) +
 geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989)) +
 geom_line (aes_string(x= rg, y= popop), color="orange") +
 scale_x_log10(limits=c(100,1145)) +
- scale_y_log10(limits=c(10000,100000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none") +
+ scale_y_log10(limits=c(10000,100000),labels=comma) +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none") +
 labs(title=(" rank 100 to 1145 distribution")) 
 #scale_colour_hue(guide="none")
 
@@ -394,10 +447,10 @@ geom_line(aes(x= rank(-X1989),y=X1989*1000, color=1989)) +
 geom_line (aes_string(x= rg, y= popop), color="orange") +
 stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 scale_x_log10(limits=c(1,1145)) +
- scale_y_log10(limits=c(10000,20000000)) +
- xlab("log(rank)") +
-ylab("log(size)")+
-scale_colour_continuous(guide="none")+
+ scale_y_log10(limits=c(10000,20000000),labels=comma) +
+  xlab("rank (log scale)") +
+  ylab("size (log scale)")+
+  scale_colour_continuous(guide="none")+
 labs(title=("whole range rank-size") )
 
 layout <- matrix(c(1,2,3,4), nrow=2,byrow=TRUE)
@@ -432,9 +485,9 @@ full_range_rank_size <- function(date, dfsimu){
 	geom_line (aes_string(x= rg, y= popop), color="orange") +
 	stat_smooth(method="lm", se=FALSE,aes_string(x= rg, y= popop), color="red")+
 	scale_x_log10(limits=c(1,1145)) +
- 	scale_y_log10(limits=c(10000,20000000)) +
-	xlab("log(rank)") +
-	ylab("log(size)")+
+ 	scale_y_log10(limits=c(10000,20000000),labels=comma) +
+	xlab("rank (log scale)") +
+	ylab("size (log scale)")+
 	scale_colour_continuous(guide="none")+
 	labs(title=(paste("Rank-size distribution in", date, sep="") ))
 
@@ -446,11 +499,36 @@ full_range_rank_size <- function(date, dfsimu){
 
 
 
+data_vs_simu_rank_sizes <- function( dfsimu){
+
+
+
+
+	pp4 <- ggplot(dfsimu,aes()) +
+	geom_line( aes(x= rank(-X1959), y= X1959*1000, color="royalblue1" ))  +
+ 	geom_line( aes(x= rank(-X1970),y=X1970*1000, color="royalblue2")) +
+	geom_line(aes(x= rank(-X1979),y=X1979*1000, color="royalblue3")) +
+	geom_line(aes(x= rank(-X1989),y=X1989*1000, color="royalblue4")) +
+	geom_line (aes(x=rank(-pop1970),y=pop1970*1000), color="indianred4",linetype="dashed") +
+	geom_line (aes(x=rank(-pop1979),y=pop1979*1000), color="indianred3", linetype="dashed") +
+	geom_line (aes(x=rank(-pop1989),y=pop1989*1000), color="indianred1",linetype="dashed") +
+	scale_x_log10(limits=c(1,1145)) +
+ 	scale_y_log10(limits=c(10000,20000000), labels=comma) +
+	xlab("rank (log scale)") +
+	ylab("size (log scale)")+
+	scale_colour_manual(values=c("royalblue4","royalblue3","royalblue2","royalblue1","indianred4", "indianred3", "indianred1"),name="year", breaks=(c("1959","1970","1979","1989", "simu 19701", "simu 1979", "simu 1989")))+
+	labs(title=("Data vs. simulation rank-size distributions "))
+
+
+	print(pp4)
+
+
+}
 
 
 
 #################################
-# Tool function for max/pin population/wealth
+# Tool function for max/min population/wealth
 ###########################################
 
 #return the global population over simlulations steps and data
@@ -481,7 +559,15 @@ full_range_rank_size(1970,df)
 dev.new()
 display_total_pop(laststep, df)
 
+#comparison data vs. simu rank size in 	a single graph
+dev.new()
+data_vs_simu_rank_sizes(df)
+
+
+
+
+
 #generate gifs
-four_quadrants_rank_size_zoom(df)
+#four_quadrants_rank_size_zoom(df)
 
 
