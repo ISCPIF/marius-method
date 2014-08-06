@@ -103,7 +103,7 @@ object MariusFile {
   def nationalCapitals = startingCities.map(l => toBoolean(l(11))).toIterator
 
   /** States cities belong to */
-  def states = startingCities.map(_(3)).toIterator
+  def nations = startingCities.map(_(3)).toIterator
 
   /** A converter function from string to boolean */
   private def toBoolean(s: String) =
