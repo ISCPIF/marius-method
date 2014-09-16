@@ -100,7 +100,7 @@ object MariusFile {
   def regionCapitals = startingCities.map(l => toBoolean(l(7))).toIterator
 
   /** A vector of boolean, true in case a city is a national capital */
-  def nationalCapitals = startingCities.map(l => toBoolean(l(11))).toIterator
+  def nationalCapitals = startingCities.map(l => toBoolean(l(9))).toIterator
 
   /** States cities belong to */
   def nations = startingCities.map(_(3)).toIterator
