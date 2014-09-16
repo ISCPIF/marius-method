@@ -74,22 +74,15 @@ val scales =
   )
 
 val evolution = 
-  Optimisation (
+  NSGA2 (
     mu = 200,
     termination = Timed(2 hour),
-    ranking = Pareto,
     inputs = scales,
     objectives = Seq(dead, distribution, overflow)
   )
 
-val nsga2  = 
-  steadyGA(evolution)(
-    "calibrateModel",
-    model
-  )
-
 // Define the island model
-val islandModel = islandGA(nsga2)("island", 2500, Counter(200000), 100)
+val islandModel = islandSteadyGA(evolution, model)("island", 5000, Counter(200000), 100)
 
 // Define the execution environment
 //val env = GliteEnvironment("biomed", openMOLEMemory = 1400, wallTime = 4 hours)
