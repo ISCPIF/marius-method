@@ -69,27 +69,26 @@ val scales =
     populationToWealthExponent -> (1.0, 10.0)
   )
 
-val evolution = 
-  Optimisation (
+val nsga2 = 
+  NSGA2 (
     mu = 200,
     termination = Timed(2 hour),
-    ranking = Pareto,
     inputs = scales,
     objectives = Seq(dead, distribution, overflow)
   )
 
-val nsga2  = 
-  steadyGA(evolution)(
+val evolution  = 
+  steadyGA(nsga2)(
     "calibrateModel",
     model
   )
 
 // Define the island model
-val islandModel = islandGA(nsga2)("island", 2500, Counter(200000), 100)
+val islandModel = islandGA(evolution)("island", 3000, Counter(200000), 100)
 
 // Define the execution environment
-//val env = GliteEnvironment("biomed", openMOLEMemory = 1400, wallTime = 4 hours)
-val env = DIRACGliteEnvironment("biomed", "https://ccdirac06.in2p3.fr:9178", cpuTime = 4 hours)
+//val env = GliteEnvironment("biomed", openMOLEMemory = 1200, wallTime = 4 hours)
+val env = DIRACGliteEnvironment("biomed", "https://ccdirac06.in2p3.fr:9178", cpuTime = 4 hours, openMOLEMemory = 1200)
 
 val savePopulation = SavePopulationHook(islandModel, path)
 

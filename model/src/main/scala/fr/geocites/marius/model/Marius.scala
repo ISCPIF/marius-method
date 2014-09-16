@@ -184,7 +184,7 @@ trait Marius {
    */
   def updatedPopulation(city: City, updatedWealth: Double): Double = {
     assert(updatedWealth >= 0, s"Negative wealth before conversion toPop $updatedWealth")
-    val deltaPopulation = wealthToPopulation(updatedWealth) - wealthToPopulation(city.wealth)
+    val deltaPopulation = (wealthToPopulation(updatedWealth) - wealthToPopulation(city.wealth)) / economicMultiplier
     val updatedPopulation = city.population + deltaPopulation
     assert(updatedPopulation >= 0, s"Negative population $updatedPopulation")
     updatedPopulation

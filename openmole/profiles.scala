@@ -62,7 +62,7 @@ import ga._
 
 val scales = 
   Seq(
-    economicMultiplier -> (0.0, 10.0),
+    economicMultiplier -> (0.0, 1.0),
     sizeEffectOnSupply -> (1.0, 10.0),
     sizeEffectOnDemand -> (1.0, 10.0),
     wealthToPopulationExponent -> (0.0,10.0),
@@ -74,7 +74,9 @@ val scales =
 
 // Define the execution environment
 //val env = GliteEnvironment("biomed", openMOLEMemory = 1400, wallTime = 4 hours)
-val env = DIRACGliteEnvironment("biomed", "https://ccdirac06.in2p3.fr:9178", cpuTime = 4 hours, openMOLEMemory = 1500)
+//val env = DIRACGliteEnvironment("biomed", "https://ccdirac06.in2p3.fr:9178", cpuTime = 4 hours, openMOLEMemory = 1500)
+
+val env = DIRACGliteEnvironment("vo.france-grilles.fr", "https://ccdirac06.in2p3.fr:9178", group = "frangrilles_user", cpuTime = 4 hours, openMOLEMemory = 1500)
 
 
 def build(number: Int) = {
@@ -91,7 +93,7 @@ def build(number: Int) = {
     )
 
   // Define the distributed genetic algorithm
-  val islandGA = islandSteadyGA(evolution, model)("island", 1000, Counter(200000), 5000)
+  val islandGA = islandSteadyGA(evolution, model)("island", 2500, Counter(200000), 5000)
 
   val hookCondition = s"${islandGA.generation.name} % 100 == 0"
   val saveProfile = SaveProfileHook(islandGA, "./profiles/" + prototype.name) condition hookCondition
@@ -106,6 +108,6 @@ def build(number: Int) = {
    (islandGA.output hook savePopulation hook saveProfile hook display)) toExecution
 }
 
-val moles = (0 until scales.size).map(build)
+val moles = Seq(0, 1, 2).map(build)
 
 
