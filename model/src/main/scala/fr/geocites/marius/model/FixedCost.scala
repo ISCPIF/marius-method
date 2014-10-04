@@ -40,7 +40,6 @@ trait FixedCost <: Marius {
           val fSupply = supplies(from)
           val fromIPSum = fromInteractionPotentialSum(from)
           val normalisedIPFrom = ip / fromIPSum
-
           if (normalisedIPFrom * fSupply > fixedCost) ip else 0.0
         } else 0.0
     }

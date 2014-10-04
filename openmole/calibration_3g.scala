@@ -27,7 +27,6 @@ val distribution = Prototype[Double]("distribution")
 val dead = Prototype[Double]("dead")
 val overflow = Prototype[Double]("overflow")
 
- 
 // Define the task which runs the model
 val modelTask = 
   GroovyTask(
@@ -77,14 +76,9 @@ val nsga2 =
     objectives = Seq(dead, distribution, overflow)
   )
 
-val evolution  = 
-  steadyGA(nsga2)(
-    "calibrateModel",
-    model
-  )
 
 // Define the island model
-val islandModel = islandGA(evolution)("island", 3000, Counter(200000), 100)
+val islandModel = islandSteadyGA(nsga2, model)("island", 5000, Counter(200000), 100)
 
 // Define the execution environment
 //val env = GliteEnvironment("biomed", openMOLEMemory = 1200, wallTime = 4 hours)

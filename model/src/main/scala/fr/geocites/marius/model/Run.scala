@@ -25,17 +25,17 @@ import fr.geocites.marius.model.MariusFile._
 import scalax.io.Resource
 
 object TestModel extends BonusFixedCostModel(
-  bonusMultiplier = 564.646869914297,
-  fixedCost = 0.427446768353976,
-  distanceDecay = 0.67639638323395,
-  sizeEffectOnSupply = 1,
-  sizeEffectOnDemand = 1.0841916528743,
-  economicMultiplier = 0,
-  populationToWealthExponent = 1.06919766558929,
-  wealthToPopulationExponent = 0.410661076332697
+  bonusMultiplier = 197.948890779081,
+  fixedCost = 0.256524806806571,
+  distanceDecay = 0.672263161474518,
+  sizeEffectOnSupply = 1.00175638801509,
+  sizeEffectOnDemand = 1.07926078029368,
+  economicMultiplier = 0.34380934416368,
+  populationToWealthExponent = 1.08660127543912,
+  wealthToPopulationExponent = 0.380435604357353
 )
 
-object Run extends App {
+object  Run extends App {
 
   val path = new File("/tmp/mariusmodel_log.csv")
   path.delete

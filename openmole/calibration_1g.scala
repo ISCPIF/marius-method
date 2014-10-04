@@ -68,14 +68,8 @@ val optimisation =
     objective = distribution
   )
 
-val evolution  = 
-  steadyGA(optimisation)(
-    "calibrateModel",
-    model
-  )
-
 // Define the island model
-val islandModel = islandGA(evolution)("island", 3000, Counter(200000), 100)
+val islandModel = islandSteadyGA(optimisation, model)("island", 5000, Counter(200000), 100)
 
 // Define the execution environment
 //val env = GliteEnvironment("biomed", openMOLEMemory = 1400, wallTime = 4 hours)

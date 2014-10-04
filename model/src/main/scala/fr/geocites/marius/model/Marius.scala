@@ -171,7 +171,7 @@ trait Marius {
     (state.cities zip supplies zip demands zip exchangeBalances(state.cities, state.network, supplies, demands) zipWithIndex).map {
       case ((((city, supply), demand), b), i) =>
         val newWealth = city.wealth + supply - demand + b
-        if (newWealth <= 0.0) 0.0 else newWealth
+        if (city.wealth <= 0.0 || newWealth <= 0.0) 0.0 else newWealth
     }
   }
 
@@ -240,18 +240,12 @@ trait Marius {
     def unsatisfieds =
       for {
         (d, i) <- transacted.demands.zipWithIndex
-      } yield {
-        val unsatisfied = d - transacted.transactedToSum(i)
-        if (unsatisfied >= 0) unsatisfied else 0
-      }
+      } yield d - transacted.transactedToSum(i)
 
     def unsolds =
       for {
         (s, i) <- transacted.supplies.zipWithIndex
-      } yield {
-        val unsold = s - transacted.transactedFromSum(i)
-        if (unsold >= 0) unsold else 0
-      }
+      } yield s - transacted.transactedFromSum(i)
 
     (unsolds zip unsatisfieds zip bonuses(transacted) zip totalFixedCosts(transacted)).map {
       case (((unsold, unsatisfied), bonus), totalFixedCost) => unsatisfied - unsold + bonus - totalFixedCost
