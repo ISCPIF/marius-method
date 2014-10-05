@@ -35,7 +35,7 @@ object TestModel extends BonusFixedCostModel(
   wealthToPopulationExponent = 0.380435604357353
 )
 
-object  Run extends App {
+object Run extends App {
 
   val path = new File("/tmp/mariusmodel_log.csv")
   path.delete

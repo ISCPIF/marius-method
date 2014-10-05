@@ -4,7 +4,7 @@ name := "marius"
 
 version := "1.0.0"
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.2"
 
 libraryDependencies += "org.geotools" % "gt-referencing" % "9.3"
 
