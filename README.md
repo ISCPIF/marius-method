@@ -1,7 +1,7 @@
 
 This project contains the source files to reproduce the results of experiments on the MARIUS model. This experiment is described in the paper:
 
-An incremental method for building and evaluating multi-agent models, submitted to JASS, under review, 2014.
+An incremental method for building and evaluating multi-agent models, submitted to JASSS, under review, 2014.
 
 Generate documentation of the model is published [here](http://iscpif.github.io/marius-method/).
 
@@ -31,7 +31,7 @@ Get the plugin in your target directory, for instance:
 
 We use OpenMoLE to describe and launch our experimentation.
 
-> OpenMOLE (Open MOdeL Experiment) is a workflow engine designed to leverage the computing power of parallel execution environments for naturally parallel processes. A process is told naturally parallel if the same computation runs many times for a set of different inputs. OpenMOLE workflows are suitable for many types of naturally parallel processes such as model experiment, image processing, text analysis… It is distributed under the AGPLv3 free software license.
+> OpenMOLE (Open MOdeL Experiment) is a workflow engine designed to leverage the computing power of parallel execution environments for naturally parallel processes. A process is told naturally parallel if the same computation runs many times for a set of different inputs. OpenMOLE workflows are suitable for many types of naturally parallel processes such as model experiment, image processing, text analysis�. It is distributed under the AGPLv3 free software license.
 
 Description of OpenMoLE installation is described on www.openmole.org website.
 
@@ -41,13 +41,13 @@ To launch OpenMoLE in console mode and load the exploration jar :
 
 `openmole -c -p /path/to/marius_2.11.jar`
 
-Then you can use the workflows avialable in the openmole directory (it is compatible with OpenMoLE 0.9). Those workflows are configured to run on the biomed VO of the grid EGI, however switching the execution environment in OpenMoLE is easy so you can use this workflow on you own multi-core machine, cluster or grid virtual organisation (you can find examples of workflows in the tutorial section on the openmole website).
+Then you can use the workflows available in the openmole directory (it is compatible with OpenMoLE 0.9). Those workflows are configured to run on the biomed VO of the grid EGI, however switching the execution environment in OpenMoLE is easy so you can use this workflow on you own multi-core machine, cluster or grid virtual organisation (you can find examples of workflows in the tutorial section on the openmole website).
 
 Usage (graphics)
 ----------------
 
 You can find graphics scripts into the R_script folder.
-The scripts have been developped on  R version 2.15.1  and require the followinglibraries:
+The scripts have been developed on  R version 2.15.1  and require the following libraries:
 
 	-ggplot2
 	-reshape2
