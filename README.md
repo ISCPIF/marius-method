@@ -1,9 +1,10 @@
 
 This project contains the source files to reproduce the results of experiments on the MARIUS model. This experiment is described in the paper:
 
-An incremental method for building and evaluating multi-agent models, submitted to JASSS, under review, 2014.
+"An incremental method for building and evaluating multi-agent models", submitted to JASSS, under review, 2014.
 
 Generate documentation of the model is published [here](http://iscpif.github.io/marius-method/).
+A description of the model following the ODD protocol is available here [here](https://github.com/ISCPIF/marius-method/blob/master/ODD-MARIUS.pdf).
 
 Licence
 -------
